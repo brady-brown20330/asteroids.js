@@ -1,4 +1,4 @@
-import { makeSprite } from "@replay/core";
+import { makeSprite, t } from "@replay/core";
 import { Ship } from "./ship";
 
 export const Level = makeSprite({
@@ -39,8 +39,14 @@ export const Level = makeSprite({
     };
   },
 
-  render({ state }) {
+  render({ state, device }) {
+    const { size } = device;
     return [
+      t.rectangle({
+        color: "#1d2951",
+        width: size.width + size.widthMargin * 2,
+        height: size.height + size.heightMargin * 2,
+      }),
       Ship({
         id: "ship",
         x: state.shipX,
