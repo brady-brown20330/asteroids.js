@@ -1,21 +1,22 @@
 import { makeSprite, t } from "@replay/core";
 import { Ship } from "./ship";
+import { Laser } from "./laser";
 
 export const Level = makeSprite({
   init() {
     return {
       shipY: 0,
       shipX: 0,
+      laserSpeed: 0,
     };
   },
 
   loop({ state, device }) {
-    let { shipY, shipX } = state;
+    let { shipY, shipX, laserSpeed } = state;
 
     const { inputs } = device;
 
-    // shipGravity += 0.8;
-    // shipY -= shipGravity;
+    //move ship up
     if (inputs.keysJustPressed["ArrowUp"]) {
       shipY += 4;
     }
@@ -32,10 +33,23 @@ export const Level = makeSprite({
       shipX += 4;
     }
 
+    if (
+      inputs.keysJustPressed["ArrowRight"] &&
+      inputs.keysJustPressed["ArrowUp"]
+    ) {
+      shipX += 4;
+      shipY += 4;
+    }
+
+    if (inputs.keysJustPressed[" "]) {
+      laserSpeed += 12;
+    }
+
     return {
       // shipGravity,
       shipY,
       shipX,
+      laserSpeed,
     };
   },
 
@@ -51,6 +65,11 @@ export const Level = makeSprite({
         id: "ship",
         x: state.shipX,
         y: state.shipY,
+      }),
+      Laser({
+        id: "laser",
+        x: state.shipX,
+        y: state.shipY + 35,
       }),
     ];
   },
